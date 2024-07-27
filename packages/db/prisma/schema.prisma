@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int             @id @default(autoincrement())
+  email             String          @unique
+  password          String
+  name              String?
+  avatarUrl         String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  messages          Message[]
+  rooms             Room[]          @relation("UserRooms")
+  lastLogin         DateTime?
+  status            String          @default("offline")
+  notifications     Notification[]
+  friends           Friend[]        @relation("UserFriends")
+  sentRequests      FriendRequest[] @relation("SentRequests")
+  receivedRequests  FriendRequest[] @relation("ReceivedRequests")
+  reactions         Reaction[]
+  friendsOf         Friend[]        @relation("FriendOf")
+  roomUsers         RoomUser[]      @relation("RoomUserUsers") 
+}
+
+model Message {
+  id        Int       @id @default(autoincrement())
+  content   String
+  createdAt DateTime  @default(now())
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
+  roomId    Int
+  room      Room      @relation(fields: [roomId], references: [id])
+  editedAt  DateTime?
+  isRead    Boolean   @default(false)
+  readBy    Int[]
+  reactions Reaction[]
+}
+
+model Room {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  messages    Message[]
+  users       User[]    @relation("UserRooms")
+  private     Boolean   @default(false) @map("isPrivate") 
+  type        String?
+  joinable    Boolean   @default(true)
+  roomUsers   RoomUser[] @relation("RoomUserRooms") 
+}
+
+
+model RoomUser {
+  id       Int      @id @default(autoincrement())
+  roomId   Int
+  room     Room     @relation(fields: [roomId], references: [id], name: "RoomUserRooms") 
+  userId   Int
+  user     User     @relation(fields: [userId], references: [id], name: "RoomUserUsers") 
+  joinedAt DateTime @default(now())
+  role     String   @default("member")
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  type      String
+  message   String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model FriendRequest {
+  id         Int      @id @default(autoincrement())
+  senderId   Int
+  sender     User     @relation("SentRequests", fields: [senderId], references: [id])
+  receiverId Int
+  receiver   User     @relation("ReceivedRequests", fields: [receiverId], references: [id])
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Friend {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation("UserFriends", fields: [userId], references: [id])
+  friendId  Int
+  friend    User     @relation("FriendOf", fields: [friendId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Reaction {
+  id        Int      @id @default(autoincrement())
+  type      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  messageId Int
+  message   Message  @relation(fields: [messageId], references: [id])
+  createdAt DateTime @default(now())
+}
