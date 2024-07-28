@@ -1,12 +1,8 @@
-import Image from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
-
-export default function Home() {
+export default function Page() {  
   return (
-  <div>
-    
-  </div>
-  
-  )
+    <div>
+      <h1>Page</h1>
+    </div>
+  );
+
 }
