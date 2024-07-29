@@ -1,8 +1,6 @@
-// services/notification.ts
 
 import axios from 'axios';
 
-// Fetch notifications for the current user
 export const getNotifications = async () => {
   try {
     const response = await axios.get('/api/notifications');
@@ -13,7 +11,7 @@ export const getNotifications = async () => {
   }
 };
 
-// Mark a specific notification as read
+
 export const markAsRead = async (notificationId: number) => {
   try {
     await axios.patch(`/api/notifications/${notificationId}`, { read: true });
