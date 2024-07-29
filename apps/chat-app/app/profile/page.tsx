@@ -1,4 +1,4 @@
-// components/ProfileForm.tsx
+
 "use client"
 import React, { useState, useEffect } from 'react';
 import { ProfileFormProps, UserProfile } from '@/type';
