@@ -1,5 +1,5 @@
 "use client"
-// components/RoomList.tsx
+
 
 import React, { useEffect, useState } from 'react';
 import { getRooms } from '@/services/api';
