@@ -1,9 +1,9 @@
-// services/message.ts
+
 
 import axios from 'axios';
 import { Message } from '@/type'; // Adjust the path if needed
 
-// API base URL, adjust if different
+
 const API_URL = '/api/messages';
 
 export const getMessagesByRoom = async (roomId: number): Promise<Message[]> => {
