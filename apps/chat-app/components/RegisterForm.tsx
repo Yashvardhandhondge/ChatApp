@@ -1,6 +1,6 @@
 
 "use client"
-// components/RegisterForm.tsx
+
 
 import React, { useState } from 'react';
 import { registerUser } from '@/services/api';
