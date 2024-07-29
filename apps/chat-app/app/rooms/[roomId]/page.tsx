@@ -40,8 +40,7 @@ const RoomPage: React.FC = () => {
 
   const handleSendMessage = async (content: string) => {
     try {
-    //   Ideally, you would handle message sending through WebSocket directly
-    //   If using API, ensure it matches your setup
+   
     //   const newMessage = await sendMessage({
     //     content,
     //     roomId: Number(roomId),
