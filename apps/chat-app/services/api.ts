@@ -1,10 +1,10 @@
-// services/api.ts
+
 
 import axios from 'axios';
 
 const API_URL = 'http://localhost:3001/api';
 
-// Create an instance of axios
+
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -12,7 +12,7 @@ const api = axios.create({
   },
 });
 
-// Add a request interceptor to include the JWT token
+
 api.interceptors.request.use(
   config => {
     const token = localStorage.getItem('token');
@@ -26,14 +26,13 @@ api.interceptors.request.use(
   }
 );
 
-// Authentication
+
 export const registerUser = (username: string, password: string) =>
   api.post('/auth/register', { username, password });
 
 export const loginUser = (username: string, password: string) =>
   api.post('/auth/login', { username, password });
 
-// Messages
 export const sendMessage = (content: string, roomId: number) =>
   api.post('/messages/send', { content, roomId });
 
@@ -46,7 +45,7 @@ export const getMessages = (roomId: number) =>
 export const deleteMessage = (messageId: number) =>
   api.delete('/messages/delete', { data: { messageId } });
 
-// Reactions
+
 export const addReaction = (type: string, messageId: number) =>
   api.post('/reactions', { type, messageId });
 
@@ -56,7 +55,7 @@ export const getReactions = (messageId: number) =>
 export const deleteReaction = (reactionId: number) =>
   api.delete('/reactions', { data: { reactionId } });
 
-// Rooms
+
 export const createRoom = (name: string, description: string, isPrivate: boolean, type: string, joinable: boolean) =>
   api.post('/rooms', { name, description, isPrivate, type, joinable });
 
@@ -66,7 +65,7 @@ export const joinRoom = (roomId: number) =>
 export const getRooms = () =>
   api.get('/rooms');
 
-// Users
+
 export const getUserProfile = () =>
   api.get('/users/profile');
 
