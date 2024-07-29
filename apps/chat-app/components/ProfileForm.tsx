@@ -1,4 +1,4 @@
-// components/ProfileForm.tsx
+
 "use client"
 import React, { useState } from 'react';
 import { UserProfile } from '@/type'; // Define types in types.ts
