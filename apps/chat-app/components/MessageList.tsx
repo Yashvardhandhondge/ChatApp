@@ -1,4 +1,4 @@
-// components/MessageList.tsx
+
 "use client";
 import React, { useEffect, useState } from 'react';
 import { useWebSocket } from '@/services/websocket';
@@ -31,7 +31,6 @@ const MessageList: React.FC<MessageListProps> = ({ roomId }) => {
 
     fetchMessages();
 
-    // WebSocket setup
     const ws = new WebSocket('ws://localhost:3001');
     
     ws.onopen = () => {
