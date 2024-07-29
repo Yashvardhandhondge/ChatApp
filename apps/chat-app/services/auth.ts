@@ -1,4 +1,3 @@
-// services/auth.ts
 
 import { loginUser, registerUser } from './api';
 
@@ -6,7 +5,7 @@ export const login = async (username: string, password: string) => {
   try {
     const response = await loginUser(username, password);
     const { token } = response.data;
-    // Save token to localStorage
+    
     localStorage.setItem('token', token);
     return response.data;
   } catch (error) {
@@ -26,7 +25,7 @@ export const register = async (username: string, password: string) => {
 };
 
 export const logout = () => {
-  // Remove token from localStorage
+  
   localStorage.removeItem('token');
 };
 
