@@ -1,4 +1,4 @@
-// components/Notification.tsx
+
 "use client"
 import React, { useEffect, useState } from 'react';
 import { getNotifications,markAsRead } from '@/services/notification';
