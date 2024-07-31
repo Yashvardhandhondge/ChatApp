@@ -13,7 +13,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   backend:
-    image: ${{ secrets.DOCKER_USERNAME }}/chat-app-backend:new
+    image: ${{ secrets.DOCKER_USERNAME }}/chat-app-backend:latest
     ports:
       - "3001:3001"
     depends_on:
@@ -23,7 +23,7 @@ services:
       JWT_SECRET: secret
 
   frontend:
-    image: ${{ secrets.DOCKER_USERNAME }}/chat-app-frontend:new
+    image: ${{ secrets.DOCKER_USERNAME }}/chat-app-frontend:latest
     ports:
       - "3000:3000"
     depends_on:
