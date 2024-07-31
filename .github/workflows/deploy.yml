@@ -3,10 +3,10 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - **
+      - '**'  # Match any branch
   pull_request:
     branches:
-      - **
+      - '**'  # Match any branch
 
 jobs:
   build-and-push:
