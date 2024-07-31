@@ -22,14 +22,14 @@ jobs:
       - name: Build and Push Backend Image
         run: |
           docker build -t chatapp_backend:latest -f Dockerfile .
-          docker tag chatapp_backend:latest ${{ secrets.DOCKER_USERNAME }}/chat-app-backend
-          docker push ${{ secrets.DOCKER_USERNAME }}/chat-app-backend
+          docker tag chatapp_backend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend
 
       - name: Build and Push Frontend Image
         run: |
           docker build -t chatapp_frontend:latest -f Dockerfile .
-          docker tag chatapp_frontend:latest ${{ secrets.DOCKER_USERNAME }}/chat-app-frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/chat-app-frontend
+          docker tag chatapp_frontend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
@@ -39,8 +39,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             # Pull latest images
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/chat-app-backend:latest
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/chat-app-frontend:latest
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend:latest
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
             
             # Stop and remove existing containers
             sudo docker stop backend || true
@@ -49,5 +49,5 @@ jobs:
             sudo docker rm frontend || true
             
             # Run new containers
-            sudo docker run -d --restart unless-stopped --name backend -p 3001:3001 ${{ secrets.DOCKER_USERNAME }}/chat-app-backend:latest
-            sudo docker run -d --restart unless-stopped --name frontend -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/chat-app-frontend:latest
+            sudo docker run -d --restart unless-stopped --name backend -p 3001:3001 ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend:latest
+            sudo docker run -d --restart unless-stopped --name frontend -p 3000:3000 ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
