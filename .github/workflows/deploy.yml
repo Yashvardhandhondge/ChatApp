@@ -22,14 +22,14 @@ jobs:
       - name: Build and Push Backend Image
         run: |
           docker build -t chatapp_backend:latest -f Dockerfile .
-          docker tag chatapp_backend:latest ${{ secrets.DOCKER_USERNAME }}/chat-app-backend:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/chat-app-backend:latest
+          docker tag chatapp_backend:latest ${{ secrets.DOCKER_USERNAME }}/chat-app-backend
+          docker push ${{ secrets.DOCKER_USERNAME }}/chat-app-backend
 
       - name: Build and Push Frontend Image
         run: |
           docker build -t chatapp_frontend:latest -f Dockerfile .
-          docker tag chatapp_frontend:latest ${{ secrets.DOCKER_USERNAME }}/chat-app-frontend:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/chat-app-frontend:latest
+          docker tag chatapp_frontend:latest ${{ secrets.DOCKER_USERNAME }}/chat-app-frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/chat-app-frontend
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
