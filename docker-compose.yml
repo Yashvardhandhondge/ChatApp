@@ -13,9 +13,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${{ secrets.DOCKER_USERNAME }}/chat-app-backend:new
     ports:
       - "3001:3001"
     depends_on:
@@ -25,9 +23,7 @@ services:
       JWT_SECRET: secret
 
   frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${{ secrets.DOCKER_USERNAME }}/chat-app-frontend:new
     ports:
       - "3000:3000"
     depends_on:
