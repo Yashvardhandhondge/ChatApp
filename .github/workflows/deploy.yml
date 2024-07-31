@@ -41,5 +41,5 @@ jobs:
 
       - name: Update Azure Web App with Docker Image
         run: |
-          az webapp config container set --name your-azure-backend-webapp-nam --resource-group yashvm_group --docker-custom-image-name ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend:latest
-          az webapp config container set --name your-azure-frontend-webapp-name --resource-group yashvm_group --docker-custom-image-name ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
+          az webapp config container set --name your-azure-backend-webapp-nam --resource-group yashvm_group --container-image-name  ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend:latest
+          az webapp config container set --name your-azure-frontend-webapp-name --resource-group yashvm_group --container-image-name  ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
