@@ -21,13 +21,13 @@ jobs:
 
       - name: Build and Push Backend Image
         run: |
-          docker-compose build backend
+          docker build -t chatapp_backend:latest -f Dockerfile.backend .
           docker tag chatapp_backend:latest ${{ secrets.DOCKER_USERNAME }}/chat-app-backend:new
           docker push ${{ secrets.DOCKER_USERNAME }}/chat-app-backend:new
 
       - name: Build and Push Frontend Image
         run: |
-          docker-compose build frontend
+          docker build -t chatapp_frontend:latest -f Dockerfile.frontend .
           docker tag chatapp_frontend:latest ${{ secrets.DOCKER_USERNAME }}/chat-app-frontend:new
           docker push ${{ secrets.DOCKER_USERNAME }}/chat-app-frontend:new
 
