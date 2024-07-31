@@ -8,7 +8,7 @@ import roomRoutes from './routes/roomRoutes';
 import messageRoutes from './routes/messageRoutes';
 import reactionRoutes from './routes/reactionRoutes';
 import cors from 'cors';
-//test1
+//test2
 const app = express();
 const PORT = process.env.PORT || 3001;
 const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
