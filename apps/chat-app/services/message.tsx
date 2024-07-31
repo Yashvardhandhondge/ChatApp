@@ -1,8 +1,7 @@
 
 
 import axios from 'axios';
-import { Message } from '@/type'; // Adjust the path if needed
-
+import { Message } from '@/type'; 
 
 const API_URL = '/api/messages';
 

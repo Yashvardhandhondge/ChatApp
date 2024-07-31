@@ -10,6 +10,9 @@ const RegisterPage: React.FC = () => {
       <div className="flex justify-center items-center min-h-screen">
         <RegisterForm />
       </div>
+      <div>
+        <p>Already have an account? <a href="/login" className="text-blue-500 hover:underline">Login</a></p>
+      </div>
     </Layout>
   );
 };

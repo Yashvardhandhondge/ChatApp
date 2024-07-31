@@ -2,7 +2,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { getRooms } from '@/services/api';
+import { getRooms, joinRoom } from '@/services/api';
 import { Room } from '@/type'; // Define types in types.ts
 
 interface RoomListProps {
@@ -40,9 +40,15 @@ const RoomList: React.FC<RoomListProps> = ({ onRoomSelect }) => {
             <li
               key={room.id}
               onClick={() => onRoomSelect(room.id)}
-              className="cursor-pointer p-2 hover:bg-gray-200 rounded"
-            >
+              className="cursor-pointer  hover:bg-gray-200 rounded"
+            ><button className='bg-green-500 w-full p-2' onClick={async ()=>{
+              const user = await joinRoom(Number(room.id));
+              console.log(user);
+              
+             }}>
+
               {room.name}
+            </button>
             </li>
           ))
         ) : (

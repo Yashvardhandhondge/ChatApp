@@ -13,6 +13,9 @@ interface Message {
   content: string;
   userId: number;
   createdAt: string;
+  user:{
+    name:string
+  }
 }
 
 const MessageList: React.FC<MessageListProps> = ({ roomId }) => {
@@ -30,6 +33,8 @@ const MessageList: React.FC<MessageListProps> = ({ roomId }) => {
     };
 
     fetchMessages();
+    
+    
 
     const ws = new WebSocket('ws://localhost:3001');
     
@@ -53,7 +58,7 @@ const MessageList: React.FC<MessageListProps> = ({ roomId }) => {
         {messages.map((message) => (
           <li key={message.id} className="border-b border-gray-200 py-2">
             <div className="font-semibold text-gray-700">
-              {`User ${message.userId}`}
+              {` ${message.user?.name}`}
             </div>
             <p className="text-gray-900">{message.content}</p>
             <span className="text-sm text-gray-500">

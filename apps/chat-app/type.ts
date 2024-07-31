@@ -1,16 +1,17 @@
-// types.ts
 
-// User Profile type
 export interface UserProfile {
-    id: number;
-    email: string;
-    name?: string;
-    avatarUrl?: string;
-    createdAt: string;
-    updatedAt: string;
-  }
-  
-  // Message type
+  id: number;
+  email: string;
+  password: string;
+  name?: string;
+  avatarUrl?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  lastLogin: Date | null;
+  status: string;
+}
+
+
   export interface Message {
     id: number;
     content: string;
@@ -22,7 +23,7 @@ export interface UserProfile {
     readBy: number[];
   }
   
-  // Notification type
+  
   export interface Notification {
     id: number;
     type: string;
@@ -32,7 +33,7 @@ export interface UserProfile {
     createdAt: string;
   }
   
-  // Reaction type
+ 
   export interface Reaction {
     id: number;
     type: string;
@@ -41,7 +42,6 @@ export interface UserProfile {
     createdAt: string;
   }
   
-  // Room type
   export interface Room {
     id: number;
     name: string;
@@ -53,26 +53,20 @@ export interface UserProfile {
     joinable: boolean;
   }
   
-  // Profile Update type
+  
   export interface ProfileUpdate {
     name?: string;
     email?: string;
     avatarUrl?: string;
   }
   
-  // Error type for API responses
+ 
   export interface ApiError {
     message: string;
   }
-  // types.ts
+ 
 
-export interface UserProfile {
-    id: number;
-    email: string;
-    name?: string;
-    avatarUrl?: string;
-    // Include other profile fields as necessary
-  }
+
   
   export interface ProfileFormProps {
     initialProfile: UserProfile | null;

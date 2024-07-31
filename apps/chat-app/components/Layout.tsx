@@ -1,6 +1,5 @@
 "use client"
 
-
 import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/navigation'; 
@@ -13,7 +12,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { push } = useRouter();
 
   const handleLogout = () => {
-  
     localStorage.removeItem('token');
     push('/login'); 
   };
@@ -27,17 +25,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </Head>
       <header className="bg-gray-800 text-white py-4">
         <nav className="container mx-auto flex justify-between items-center">
-          <ul className="flex space-x-4">
-            <li>
-              <a href="/" className="hover:text-gray-400">Home</a>
-            </li>
-            <li>
-              <a href="/profile" className="hover:text-gray-400">Profile</a>
-            </li>
-            <li>
-              <a href="/rooms" className="hover:text-gray-400">Rooms</a>
-            </li>
-          </ul>
+          <div className="flex items-center">
+            <h1 className="text-3xl font-bold text-blue-400">Y-Chat</h1>
+            <ul className="flex space-x-4 ml-6">
+              <li>
+                <a href="/" className="hover:text-gray-400">Home</a>
+              </li>
+              <li>
+                <a href="/profile" className="hover:text-gray-400">Profile</a>
+              </li>
+              <li>
+                <a href="/rooms" className="hover:text-gray-400">Rooms</a>
+              </li>
+            </ul>
+          </div>
           <button 
             onClick={handleLogout} 
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"

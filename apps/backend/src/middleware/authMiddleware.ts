@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { setUserId } from '..';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 
         console.log("Authenticated user:", user);
         req.userId = user.userId; 
+        setUserId(user.userId);
         next();
     });
 };

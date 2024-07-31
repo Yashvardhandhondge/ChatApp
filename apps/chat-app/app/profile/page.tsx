@@ -1,86 +1,60 @@
-
 "use client"
 import React, { useState, useEffect } from 'react';
-import { ProfileFormProps, UserProfile } from '@/type';
-import { updateUserProfile } from '@/services/api'; // Adjust if needed
+import { UserProfile } from '@/type';
+import { getUserProfile } from '@/services/api'; // Adjust if needed
+import Layout from '@/components/Layout';
+import Profile from '@/components/profile';
+import { useRouter } from 'next/navigation';
 
-const ProfileForm: React.FC<ProfileFormProps> = ({ initialProfile }) => {
-  const [profile, setProfile] = useState<UserProfile | null>(initialProfile);
+const ProfilePage = () => {
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    setProfile(initialProfile);
-  }, [initialProfile]);
+    const fetchProfile = async () => {
+      const data = await getUserProfile();
+      setProfile(data);
+    };
+    fetchProfile();
+  }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProfile({
-      ...profile!,
-      [e.target.name]: e.target.value,
-    });
+  const handleEditClick = () => {
+    router.push('/Edit');
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      if (profile && profile.name && profile.email) {
-        await updateUserProfile(profile.name, profile.email);
-        // Handle success (e.g., show a success message or redirect)
-      }
-    } catch (err) {
-      // Handle error (e.g., show an error message)
-    }
-  };
-
-  if (!profile) return <p>No profile data available.</p>;
+  if (!profile) return <p>Loading profile...</p>;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-          Name
-        </label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          value={profile.name || ''}
-          onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-        />
+    <Layout>
+      <div className="flex h-screen flex-col md:flex-row">
+        <div >
+          
+        </div>
+        <div className="md:w-3/4 p-4 flex flex-col justify-start">
+          <div className="mb-4">
+            <h1 className="text-2xl font-bold mb-4">Profile</h1>
+            <div>
+              <div className="mb-4">
+                <strong>Name:</strong> {profile.name}
+              </div>
+              <div className="mb-4">
+                <strong>Email:</strong> {profile.email}
+              </div>
+              <div className="mb-4">
+                <strong>Avatar:</strong> <img src={profile.avatarUrl} alt="Avatar" className="w-16 h-16 rounded-full" />
+              </div>
+            </div>
+            <button
+              onClick={handleEditClick}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
+            >
+              Edit Profile
+            </button>
+          </div>
+        </div>
       </div>
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-          Email
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          value={profile.email}
-          onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-        />
-      </div>
-      <div>
-        <label htmlFor="avatarUrl" className="block text-sm font-medium text-gray-700">
-          Avatar URL
-        </label>
-        <input
-          id="avatarUrl"
-          name="avatarUrl"
-          type="text"
-          value={profile.avatarUrl || ''}
-          onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-        />
-      </div>
-      <button
-        type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded-md"
-      >
-        Save Changes
-      </button>
-    </form>
+    </Layout>
   );
 };
 
-export default ProfileForm;
+export default ProfilePage;

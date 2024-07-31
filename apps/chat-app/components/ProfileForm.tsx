@@ -27,7 +27,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user, onSave, onCancel }) => 
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
+      <h2 className="text-xl font-bold mb-4"> Profile</h2>
       <label className="block mb-2">
         Name:
         <input
@@ -50,13 +50,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user, onSave, onCancel }) => 
       </label>
       <label className="block mb-4">
         Avatar URL:
-        <input
-          type="text"
-          name="avatarUrl"
-          value={formValues.avatarUrl || ''}
-          onChange={handleInputChange}
-          className="block w-full mt-1 p-2 border border-gray-300 rounded"
-        />
+        <img src={formValues.avatarUrl} alt="" />
       </label>
       <button
         onClick={handleSubmit}

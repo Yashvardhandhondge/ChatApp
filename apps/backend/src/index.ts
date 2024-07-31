@@ -21,6 +21,9 @@ app.use('/api/rooms', roomRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/reactions', reactionRoutes);
 
+let userId = 0
+export const setUserId = (id:number)=> userId = id
+
 interface ExtendedWebSocket extends WebSocket {
   userId?: number;
 }
@@ -74,7 +77,7 @@ async function sendMessage(ws: ExtendedWebSocket, message: any) {
     const newMessage = await prisma.message.create({
       data: {
         content,
-        userId: ws.userId,
+        userId: userId,
         roomId,
       },
     });

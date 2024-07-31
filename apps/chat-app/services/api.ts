@@ -1,5 +1,6 @@
 
 
+import { UserProfile } from '@/type';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:3001/api';
@@ -27,11 +28,11 @@ api.interceptors.request.use(
 );
 
 
-export const registerUser = (username: string, password: string) =>
-  api.post('/auth/register', { username, password });
+export const registerUser = (email: string, password: string,name:string) =>
+  api.post('/auth/register', { email, password,name });
 
-export const loginUser = (username: string, password: string) =>
-  api.post('/auth/login', { username, password });
+export const loginUser = (email: string, password: string) =>
+  api.post('/auth/login', { email, password });
 
 export const sendMessage = (content: string, roomId: number) =>
   api.post('/messages/send', { content, roomId });
@@ -65,9 +66,37 @@ export const joinRoom = (roomId: number) =>
 export const getRooms = () =>
   api.get('/rooms');
 
+export const getRoom = (roomId: number) =>
+  api.get(`/rooms/${roomId}`);
 
-export const getUserProfile = () =>
-  api.get('/users/profile');
+export const getUsersInRoom = (roomId: number) =>
+  api.get(`/rooms/${roomId}/users`);
 
-export const updateUserProfile = (username: string, email: string) =>
-  api.patch('/users/profile', { username, email });
+export const allowUserToJoinRoom = (roomId: number, userId: number) =>
+  api.post('/rooms/allowJoin', { roomId, userId });
+
+export const getRoomsByUser = (userId: number) =>
+  api.get(`/rooms/user/${userId}`);
+
+export const getRoomsByName = (name: string) =>
+  api.get(`/rooms/room/${name}`);
+
+export const getUserProfile = async (): Promise<UserProfile> => {
+  const response = await api.get('/users/profile'); 
+
+  
+  return response.data;
+};
+
+
+export const updateUserProfile = (name: string, email: string,avatarUrl:string) =>
+  api.patch('/users/profile', { name, email,avatarUrl });
+
+
+export const checkUserStatus = async (): Promise<{ isRegistered: boolean }> => {
+  
+  await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+
+  // Return mock status; replace with actual API call
+  return { isRegistered: false }; // Change to true to simulate an already registered user
+};

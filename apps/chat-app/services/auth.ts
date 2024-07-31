@@ -14,9 +14,9 @@ export const login = async (username: string, password: string) => {
   }
 };
 
-export const register = async (username: string, password: string) => {
+export const register = async (email: string, password: string,name:string) => {
   try {
-    const response = await registerUser(username, password);
+    const response = await registerUser(email, password, name);
     return response.data;
   } catch (error) {
     console.error('Registration failed:', error);
