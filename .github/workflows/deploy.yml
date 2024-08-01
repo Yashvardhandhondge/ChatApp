@@ -30,10 +30,14 @@ jobs:
           docker tag chatapp_backend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend
 
+      - name: Build and Push Frontend Image
+        run: |
+          docker build -t chatapp_frontend:latest -f Dockerfile .
+          docker tag chatapp_frontend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend
+
       - name: Test SSH Connection
         run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' > /tmp/ssh_key
-          chmod 600 /tmp/ssh_key
           ssh -i /tmp/ssh_key -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} echo "SSH connection successful"
 
       - name: Copy docker-compose.yml to EC2
@@ -49,6 +53,7 @@ jobs:
           script: |
             # Pull latest images
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend:latest
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
             
             # Stop and remove existing containers
             sudo docker-compose -f /home/${{ secrets.EC2_USERNAME }}/docker-compose.yml down
