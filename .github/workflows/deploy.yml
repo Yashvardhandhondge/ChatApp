@@ -31,23 +31,23 @@ jobs:
           docker tag chatapp_frontend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend
 
-      - name: Deploy to EC2
+      - name: Deploy to azure
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Pull latest images
+            # Pulling my latest images
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend:latest
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
             
-            # Stop and remove existing containers
+            # here Stoping and removing existing containers
             sudo docker stop backend || true
             sudo docker rm backend || true
             sudo docker stop frontend || true
             sudo docker rm frontend || true
             
-            # Run new containers
+            # Running new containers on virtual machine
             sudo docker run -d --restart unless-stopped --name backend -p 3001:3001 -p 3000:3000 -e DATABASE_URL=postgresql://test_owner:aA7XtiDCQ6dl@ep-broad-bread-a5fbnico.us-east-2.aws.neon.tech/test?sslmode=require ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend:latest
            # sudo docker run -d --restart unless-stopped --name frontend -p 3000:3000 ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
