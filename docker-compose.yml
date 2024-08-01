@@ -20,8 +20,8 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgresql://postgres:password@db:5432/postgres
-      JWT_SECRET: secret
+      - DATABASE_URL=postgresql://postgres:password@db:5432/postgres
+      - JWT_SECRET=secret
 
   # frontend:
   #   image: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
