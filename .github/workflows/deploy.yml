@@ -49,5 +49,5 @@ jobs:
             sudo docker rm frontend || true
             
             # Run new containers
-            sudo docker run -d --restart unless-stopped --name backend -p 3001:3001 ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend:latest
-            sudo docker run -d --restart unless-stopped --name frontend -p 3000:3000 ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
+            sudo docker run -d --restart unless-stopped --name backend -p 3001:3001 -p 3000:3000 ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend:latest
+           # sudo docker run -d --restart unless-stopped --name frontend -p 3000:3000 ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
