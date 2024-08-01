@@ -31,6 +31,10 @@ jobs:
           docker tag chatapp_frontend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend
 
+      - name: Copy docker-compose.yml to EC2
+        run: |
+          scp -i ${{ secrets.EC2_SSH_KEY }} docker-compose.yml ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
+
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -43,11 +47,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
             
             # Stop and remove existing containers
-            sudo docker stop backend || true
-            sudo docker rm backend || true
-            sudo docker stop frontend || true
-            sudo docker rm frontend || true
+            sudo docker-compose -f /home/ec2-user/docker-compose.yml down
             
-            # Run new containers
-            sudo docker run -d --restart unless-stopped --name backend -p 3001:3001 ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend:latest
-            sudo docker run -d --restart unless-stopped --name frontend -p 3000:3000 ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
+            # Start services with Docker Compose
+            sudo docker-compose -f /home/ec2-user/docker-compose.yml up -d
