@@ -36,10 +36,12 @@ jobs:
           docker tag chatapp_frontend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend
 
-      - name: Write SSH key to file
+      - name: Debug SSH Key
         run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" > /tmp/ssh_key
+          echo "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' > /tmp/ssh_key
           chmod 600 /tmp/ssh_key
+          ls -l /tmp/ssh_key
+          cat /tmp/ssh_key
 
       - name: Copy docker-compose.yml to EC2
         run: |
