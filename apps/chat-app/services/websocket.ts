@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 const useWebSocket = (roomId: number) => {
-  const ws = new WebSocket('ws://localhost:3001'); // Update URL if needed
+  const ws = new WebSocket('ws://20.2.210.226:3001'); // Update URL if needed
 
   const sendMessage = (message: string) => {
     ws.send(message);

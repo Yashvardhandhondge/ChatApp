@@ -3,7 +3,7 @@
 import { UserProfile } from '@/type';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3001/api';
+const API_URL = 'http://20.2.210.226:3001/api';
 
 
 const api = axios.create({
