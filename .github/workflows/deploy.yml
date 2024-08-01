@@ -13,11 +13,6 @@ jobs:
       - name: Check Out Repo
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -36,14 +31,6 @@ jobs:
           docker tag chatapp_frontend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend
 
-      - name: Test SSH Connection
-        run: |
-          ssh -i /tmp/ssh_key -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} echo "SSH connection successful"
-
-      - name: Copy docker-compose.yml to EC2
-        run: |
-          scp -i /tmp/ssh_key docker-compose.yml ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/
-
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -56,7 +43,11 @@ jobs:
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
             
             # Stop and remove existing containers
-            sudo docker-compose -f /home/${{ secrets.EC2_USERNAME }}/docker-compose.yml down
+            sudo docker stop backend || true
+            sudo docker rm backend || true
+            sudo docker stop frontend || true
+            sudo docker rm frontend || true
             
-            # Start services with Docker Compose
-            sudo docker-compose -f /home/${{ secrets.EC2_USERNAME }}/docker-compose.yml up -d
+            # Run new containers
+            sudo docker run -d --restart unless-stopped --name backend -p 3001:3001 ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend:latest
+            sudo docker run -d --restart unless-stopped --name frontend -p 3000:3000 ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
