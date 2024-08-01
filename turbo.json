@@ -13,7 +13,7 @@
     "start":{
       "dependsOn":["^start"],
       "inputs":["$TURBO_DEFAULTS",".env"]
-    }
+    },
     "dev": {
       "cache": false,
       "persistent": true
