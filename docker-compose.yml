@@ -16,20 +16,21 @@ services:
     image: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend:latest
     ports:
       - "3001:3001"
+      - "3000:3000"
     depends_on:
       - db
     environment:
       DATABASE_URL: postgresql://postgres:password@db:5432/postgres
       JWT_SECRET: secret
 
-  frontend:
-    image: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    environment:
-      DATABASE_URL: postgresql://postgres:password@db:5432/postgres
+  # frontend:
+  #   image: ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - backend
+  #   environment:
+  #     DATABASE_URL: postgresql://postgres:password@db:5432/postgres
 
 volumes:
   postgres-data:
