@@ -14,9 +14,12 @@ export const login = async (username: string, password: string) => {
   }
 };
 
-export const register = async (email: string, password: string,name:string) => {
+export const register = async (email: string, password: string,name:string,image:string) => {
   try {
-    const response = await registerUser(email, password, name);
+    const response = await registerUser(email, password, name,image);
+        const { token } = response.data;
+    
+    localStorage.setItem('token', token);
     return response.data;
   } catch (error) {
     console.error('Registration failed:', error);

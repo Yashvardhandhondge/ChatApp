@@ -79,15 +79,27 @@ async function sendMessage(ws: ExtendedWebSocket, message: any) {
 
     const { content, roomId } = message;
 
+    const user = await prisma.user.findUnique({
+      where:{
+        id: userId
+      }
+    })
+
     const newMessage = await prisma.message.create({
       data: {
         content,
         userId: userId,
         roomId,
       },
+      include:{
+        user:true,
+        room:true
+      }
     });
 
-   
+    
+  
+
     wss.clients.forEach(client => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(JSON.stringify(newMessage));
