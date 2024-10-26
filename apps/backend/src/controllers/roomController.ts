@@ -66,22 +66,26 @@ export const joinRoom = async (req: Request, res: Response) => {
         res.status(400).json({ error: (error as Error).message || "An error occurred while joining the room" });
     }
 };
-
 export const getRooms = async (req: Request, res: Response) => {
     try {
         const userId = req.userId;
 
-        if (!userId) {
-            return res.status(401).json({ error: "User not authenticated" });
-        }
-
         const rooms = await prisma.room.findMany({
             where: {
-                users: {
-                    some: { id: userId }
-                }
+                OR: [
+                    { private: false }, 
+                    {
+                        users: {
+                            some: { id: userId } 
+                        }
+                    }
+                ]
+            },
+            include: {
+                users: true, 
             }
         });
+        
         res.status(200).json(rooms);
     } catch (error) {
         console.error("Error fetching rooms:", error);
@@ -184,6 +188,9 @@ export const getRoomsByUser = async (req: Request, res: Response) => {
                         id: parseInt(userId)
                     }
                 }
+            },
+            include:{
+                
             }
         });
 
@@ -210,6 +217,9 @@ export const getRoomsByName = async (req: Request, res: Response) => {
                 name: {
                     contains: name
                 }
+            },
+            include:{
+                
             }
         });
 

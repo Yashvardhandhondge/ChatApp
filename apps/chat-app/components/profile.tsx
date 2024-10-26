@@ -1,9 +1,9 @@
-
 "use client";
 import React, { useState, useEffect } from 'react';
 import { UserProfile } from '@/type';
 import { getUserProfile, updateUserProfile } from '@/services/api';
 import ProfileForm from '@/components/ProfileForm';
+import LoadingSpinner from './Loading';
 
 const Profile: React.FC = () => {
   const [profile, setProfile] = useState<UserProfile>({
@@ -12,9 +12,9 @@ const Profile: React.FC = () => {
     password: "",
     name: "",
     avatarUrl: "",
-    createdAt: new Date,
-    updatedAt: new Date,
-    lastLogin: new Date,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    lastLogin: new Date(),
     status: "",
   });
   const [loading, setLoading] = useState<boolean>(true);
@@ -24,9 +24,6 @@ const Profile: React.FC = () => {
     const fetchProfile = async () => {
       try {
         const user = await getUserProfile();
-        
-        console.log(user);
-        
         setProfile(user);
         setLoading(false);
       } catch (err) {
@@ -40,7 +37,7 @@ const Profile: React.FC = () => {
   const handleSave = async (updatedProfile: Partial<UserProfile>) => {
     try {
       if (profile) {
-        const updatedData = await updateUserProfile(profile.name||"", profile.email,profile.avatarUrl||"");
+        const updatedData = await updateUserProfile(profile.name || "", profile.email, profile.avatarUrl || "");
         setProfile(updatedData.data);
       }
     } catch (err) {
@@ -49,16 +46,16 @@ const Profile: React.FC = () => {
   };
 
   const handleCancel = () => {
-   
+    // Implement cancel functionality if needed
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <div className="flex justify-center"><LoadingSpinner /></div>;
+  if (error) return <p className="text-red-500">{error}</p>;
   if (!profile) return <p>No profile data available.</p>;
 
   return (
-    <div className="profile-container">
-      <h1 className="text-2xl font-bold">User Profile</h1>
+    <div className="max-w-lg mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4 text-center">User Profile</h1>
       <ProfileForm
         user={profile}
         onSave={handleSave}
