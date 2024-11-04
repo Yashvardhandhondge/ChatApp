@@ -10,7 +10,7 @@ router.get('/', authenticateToken, getRooms);
 router.get('/:roomId', authenticateToken, getRoom);
 router.get('/:roomId/users', authenticateToken, getUsersInRoom);
 router.post('/allowJoin', authenticateToken, allowUserToJoinRoom);
-router.get('/user/:userId', authenticateToken, getRoomsByUser); // New route
-router.get('/room/:name', authenticateToken, getRoomsByName); // New route
+router.get('/user/:userId', authenticateToken, getRoomsByUser); 
+router.get('/room/:name', authenticateToken, getRoomsByName); 
 
 export default router;

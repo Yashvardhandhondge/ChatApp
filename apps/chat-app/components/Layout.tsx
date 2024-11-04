@@ -60,7 +60,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </span>
         </div>
 
-        {/* Desktop Links */}
+        
         <div className="hidden md:flex space-x-6">
           <Link href="/" className="text-gray-700 text-xl hover:text-purple-500 transition-transform">
             Home
@@ -70,7 +70,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </Link>
         </div>
 
-        {/* Mobile Dropdown */}
+        
         <div className="md:hidden relative">
           <button onClick={toggleDropdown} className="btn btn-ghost">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -46,7 +46,7 @@ const Profile: React.FC = () => {
   };
 
   const handleCancel = () => {
-    // Implement cancel functionality if needed
+    
   };
 
   if (loading) return <div className="flex justify-center"><LoadingSpinner /></div>;
