@@ -6,12 +6,14 @@ import RegisterForm from '../../components/RegisterForm';
 
 const RegisterPage: React.FC = () => {
   return (
-    <Layout>
-      <div className="flex justify-center items-center min-h-screen">
+  
+
+      <div className="flex justify-center items-center h-screen w-screen">
         <RegisterForm />
       </div>
    
-    </Layout>
+  
+
   );
 };
 

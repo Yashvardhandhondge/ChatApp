@@ -5,7 +5,8 @@ import SearchRooms from "@/components/SearchRoom";
 import { createRoom } from "@/services/api";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { FaPlus, FaTimes } from "react-icons/fa"; // Import FaTimes for the cross icon
+import { FaPlus, FaTimes } from "react-icons/fa"; 
+
 
 const Page = () => {
   const [formdata, setFormdata] = useState({
@@ -15,7 +16,7 @@ const Page = () => {
     type: "dunno",
     joinable: true,
   });
-  const [showForm, setShowForm] = useState(false); // State to toggle form visibility
+  const [showForm, setShowForm] = useState(false); 
   const router = useRouter();
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) => {
@@ -25,6 +26,7 @@ const Page = () => {
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
     }));
+    router.push('/rooms');
   };
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
@@ -38,7 +40,8 @@ const Page = () => {
         formdata.joinable
       );
       console.log("Room created");
-      setShowForm(false); // Hide the form after successful submission
+
+      setShowForm(false); 
     } catch (error) {
       console.error("Failed to create room:", error);
     }
@@ -47,22 +50,12 @@ const Page = () => {
   return (
     <Layout>
       <div className="text-black">
-        <div className="p-7">
-          <SearchRooms />
-        </div>
-        <div className="text-black ml-6">
-          <RoomList
-          load= {true}
-            onRoomSelect={async (roomId) => {
-              router.push(`/rooms/${roomId}`);
-            }}
-          />
-        </div>
-
+       
+    
 
         {!showForm ? (
           <div className="flex flex-col items-center mt-6">
-            <h3 className="text-2xl font-semibold text-gray-700 mb-3">
+            <h3 className="text-2xl font-semibold text-gray-950 mb-3">
               Want a new room for your own?
             </h3>
             <button
@@ -119,6 +112,7 @@ const Page = () => {
   name="type"
   value={formdata.type}
   onChange={handleChange}
+
   className="px-4 py-2 rounded-md border border-gray-400 focus:outline-none focus:ring-0 focus:border-purple-500 bg-transparent"
 >
   <option value="dunno">Unknown</option>
@@ -134,6 +128,17 @@ const Page = () => {
             </button>
           </form>
         )}
+         <div className="p-7">
+          <SearchRooms />
+        </div>
+           <div className="text-black ml-6">
+          <RoomList
+            currentUserId={70}
+            onRoomSelect={async (roomId) => {
+              router.push(`/rooms/${roomId}`);
+            }}
+          />
+        </div>
       </div>
     </Layout>
   );

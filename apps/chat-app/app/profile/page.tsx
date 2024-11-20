@@ -22,19 +22,23 @@ const ProfilePage: React.FC = () => {
     router.push('/Edit');
   };
 
+  const handleHomeClick = () => {
+    router.push('/rooms');
+  }
+
   if (!profile) return <p><LoadingSpinner /></p>;
 
   return (
     <Layout>
-      <div className="flex flex-col md:flex-row p-4"> {/* Added padding */}
-        <div className="flex-shrink-0 md:w-1/4 flex justify-center items-center"> {/* Avatar Section */}
+      <div className="flex flex-col md:flex-row p-4"> 
+        <div className="flex-shrink-0 md:w-1/4 flex justify-center items-center"> 
           <img 
             src={profile.avatarUrl} 
             alt="Avatar" 
-            className="w-24 h-24 rounded-full shadow-md" // Increased size for better visibility
+            className="w-24 h-24 rounded-full shadow-md" 
           />
         </div>
-        <div className="md:w-3/4 p-4 flex flex-col justify-start"> {/* Profile Info Section */}
+        <div className="md:w-3/4 p-4 flex flex-col justify-start"> 
           <h1 className="text-2xl font-bold mb-4">Profile</h1>
           <div className="mb-4">
             <strong>Name:</strong> {profile.name}
@@ -44,9 +48,15 @@ const ProfilePage: React.FC = () => {
           </div>
           <button
             onClick={handleEditClick}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
+            className="bg-purple-500 text-white px-4 py-2 rounded-md mt-4 w-60 hover:bg-purple-800 transition-transform hover:scale-95"
           >
             Edit Profile
+          </button>
+          <button
+            onClick={handleHomeClick}
+            className="bg-purple-500 text-white px-4 py-2 rounded-md mt-4 w-60 hover:bg-purple-800 transition-transform hover:scale-95"
+          >
+            Back to Home Page 
           </button>
         </div>
       </div>

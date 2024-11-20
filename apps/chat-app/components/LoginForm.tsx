@@ -23,12 +23,12 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center mt-[-60px] items-center bg-white">
+    <div className="flex justify-center min-h-screen w-screen mt-[-60px] items-center bg-gradient-to-br from-purple-600 to-blue-500">
    
       <div className="w-full max-w-md p-8 rounded-lg shadow-xl flex">
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit} className="w-full">
-          <h2 className="text-pretty text-slate-800 flex justify-center items-center text-2xl font-['Neue Montreal'] mb-6">Login</h2>
+          <h2 className="text-pretty text-slate-950 flex justify-center items-center text-2xl font-['Neue Montreal'] mb-6">Login</h2>
           <div className="mb-4 relative">
             <input
               type="text"
@@ -62,7 +62,7 @@ const LoginForm: React.FC = () => {
             </button>
           </div>
           <div className='mb-4'>
-          <p className='text text-pretty text-gray-400'>
+          <p className='text text-pretty text-white'>
             New To platform?{' '}
             <Link href='/register' className='text-purple-400 hover:text-purple-700'>
             register
@@ -71,9 +71,9 @@ const LoginForm: React.FC = () => {
           </div>
         </form>
       </div>
-      <div>
+      {/* <div>
         <img src="https://herobot.app/wp-content/uploads/2022/11/11-Reasons-Why-A-Chat-Application-Is-Great-For-Business_1.jpg" className='w-full h-full max-w-[800px]' alt="" />
-      </div>
+      </div> */}
     </div>
   );
 };

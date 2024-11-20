@@ -7,9 +7,10 @@ interface ProfileFormProps {
   user: UserProfile;
   onSave: (profileData: Partial<UserProfile>) => void;
   onCancel: () => void;
+
 }
 
-const ProfileForm: React.FC<ProfileFormProps> = ({ user, onSave, onCancel }) => {
+const ProfileForm: React.FC<ProfileFormProps> = ({ user, onSave, onCancel, }) => {
   const [formValues, setFormValues] = useState<Partial<UserProfile>>({
     name: user.name || '',
     email: user.email || '',
@@ -57,7 +58,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user, onSave, onCancel }) => 
           name="name"
           value={formValues.name || ''}
           onChange={handleInputChange}
-          className="block w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="block text-black  placeholder:text-black w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
       </label>
       <label className="block mb-2">

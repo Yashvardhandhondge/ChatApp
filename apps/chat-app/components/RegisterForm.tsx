@@ -42,19 +42,19 @@ const RegisterForm: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row justify-center items-center bg-white py-8 px-4">
-      <div className="flex-1">
+    <div className="flex flex-col md:flex-row justify-center items-center bg-gradient-to-br from-purple-600 to-blue-500 py-8 px-4 min-h-screen w-screen">
+      {/* <div className="flex-1 ">
         <img
           src="https://herobot.app/wp-content/uploads/2022/11/11-Reasons-Why-A-Chat-Application-Is-Great-For-Business_1.jpg"
-          className="w-full h-auto max-w-[800px] rounded-lg"
+          className="w-full h-auto max-w-[800px] rounded-lg bg-gradient-to-br from-purple-600 to-blue-500"
           alt=""
         />
-      </div>
-      <div className="w-full max-w-md p-8 rounded-lg shadow-xl bg-white flex flex-col">
+      </div> */}
+      <div className="w-full max-w-md p-8 rounded-lg shadow-xl bg-gradient-to-br from-purple-600 to-blue-500  flex flex-col">
         {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
         {success && <p className="text-green-500 mb-4 text-center">{success}</p>}
         <form onSubmit={handleSubmit} className="w-full">
-          <h2 className="text-pretty text-slate-800 text-2xl font-['Neue Montreal'] mb-6 text-center">
+          <h2 className="text-pretty text-slate-950 text-2xl font-['Neue Montreal'] mb-6 text-center">
             Register
           </h2>
           <div className="mb-4 relative">
@@ -122,9 +122,9 @@ const RegisterForm: React.FC = () => {
             />
           </div>
           <div className="mb-4 text-center">
-            <p className="text text-pretty text-gray-400">
+            <p className="text text-pretty text-white">
               Already Have an Account?{' '}
-              <Link href="/login" className="text-purple-400 hover:text-purple-700">
+              <Link href="/login" className="text-purple-300 hover:text-purple-700">
                 Login
               </Link>
             </p>

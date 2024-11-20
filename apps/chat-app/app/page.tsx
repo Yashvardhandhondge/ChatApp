@@ -1,14 +1,16 @@
 "use client";
-import { useEffect, useState, useRef } from 'react';
-import { FaUserPlus, FaSignInAlt } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
+import { FaUserPlus, FaSignInAlt } from 'react-icons/fa';
 import { checkUserStatus } from '@/services/api';
+import Button from '@/components/ui/Button';
+import { MessageCircle, Users, Lock, BarChart2 } from 'lucide-react';
 
 const MyApp = () => {
   const [isRegistered, setIsRegistered] = useState<boolean | null>(null);
   const router = useRouter();
-  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     const fetchUserStatus = async () => {
@@ -22,14 +24,6 @@ const MyApp = () => {
     fetchUserStatus();
   }, []);
 
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch((error) => {
-        console.error("Error playing video:", error);
-      });
-    }
-  }, []);
-
   const handleRegisterClick = () => {
     router.push('/register');
   };
@@ -38,24 +32,48 @@ const MyApp = () => {
     router.push('/login');
   };
 
+  const fadeIn = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6 }
+  };
+
+  const features = [
+    { icon: <MessageCircle className="w-6 h-6" />, title: "Live Chatting", description: "Real-time messaging for instant communication" },
+    { icon: <Users className="w-6 h-6" />, title: "Public Rooms", description: "Join open discussions on various topics" },
+    { icon: <Lock className="w-6 h-6" />, title: "Private Rooms", description: "Create secure spaces for confidential chats" },
+    { icon: <BarChart2 className="w-6 h-6" />, title: "User Dashboard", description: "Track your activity and manage preferences" }
+  ];
+
   return (
     <Layout>
-      <div className="flex flex-col md:flex-row items-center justify-center md:justify-start min-h-screen p-4 bg-white">
-        
-        
-        <div className="hidden md:block md:ml-24">
-          <video ref={videoRef} src="https://cdn-icons-mp4.flaticon.com/512/15374/15374789.mp4" autoPlay loop className="max-w-md rounded-lg" />
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-purple-600 to-blue-500 text-white">
+        <header className="container mx-auto px-4 py-8">
+          <nav className="flex justify-between items-center">
+           
+         
+          </nav>
+        </header>
 
-
-        <div className="flex flex-col items-center justify-center text-center p-8 md:p-24 md:ml-8 w-full md:w-auto ml-20">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 font-['Founders_Grotesk_X-Condensed'] text-purple-600 ">Welcome to Y-Chat!</h1>
-          <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-            <h2 className="text-2xl font-semibold mb-4">Getting Started</h2>
-            <p className="text-gray-600 mb-4">
-              Whether you’re new to Y-Chat or returning, we’re excited to have you here.
-              Please select one of the options below to either register or log in.
-            </p>
+        <main className="container mx-auto px-4 py-16">
+          <motion.div 
+            className="text-center mb-16"
+            initial="initial"
+            animate="animate"
+            variants={fadeIn}
+          >
+            <motion.h1 
+              className="text-5xl md:text-7xl font-extrabold mb-6"
+              variants={fadeIn}
+            >
+              Welcome to Y-Chat!
+            </motion.h1>
+            <motion.p 
+              className="text-xl md:text-2xl mb-8"
+              variants={fadeIn}
+            >
+              Experience seamless communication with our interactive platform.
+            </motion.p>
             <div className="flex justify-center gap-4">
               <button
                 onClick={handleRegisterClick}
@@ -72,8 +90,30 @@ const MyApp = () => {
                 Log In
               </button>
             </div>
-          </div>
-        </div>
+          </motion.div>
+
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+            initial="initial"
+            animate="animate"
+          >
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-6 text-center"
+                variants={fadeIn}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="text-4xl mb-4 flex justify-center">{feature.icon}</div>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-sm opacity-80">{feature.description}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </main>
+
+       
       </div>
     </Layout>
   );

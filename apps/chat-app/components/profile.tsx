@@ -4,6 +4,7 @@ import { UserProfile } from '@/type';
 import { getUserProfile, updateUserProfile } from '@/services/api';
 import ProfileForm from '@/components/ProfileForm';
 import LoadingSpinner from './Loading';
+import { useRouter } from 'next/router';
 
 const Profile: React.FC = () => {
   const [profile, setProfile] = useState<UserProfile>({
@@ -19,7 +20,7 @@ const Profile: React.FC = () => {
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const router = useRouter();
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -48,6 +49,9 @@ const Profile: React.FC = () => {
   const handleCancel = () => {
     
   };
+  const handleView = () => {
+   router.push('/profile');
+  }
 
   if (loading) return <div className="flex justify-center"><LoadingSpinner /></div>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -60,6 +64,7 @@ const Profile: React.FC = () => {
         user={profile}
         onSave={handleSave}
         onCancel={handleCancel}
+     
       />
     </div>
   );

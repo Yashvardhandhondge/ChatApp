@@ -1,7 +1,7 @@
 import { UserProfile } from '@/type';
 import axios from 'axios';
 
-const API_URL = 'https://chatapp-8ock.onrender.com/api';
+const API_URL = 'http://localhost:3001/api';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -88,3 +88,12 @@ export const checkUserStatus = async (): Promise<{ isRegistered: boolean }> => {
   await new Promise(resolve => setTimeout(resolve, 1000)); 
   return { isRegistered: false }; 
 };
+
+export const deleteUserProfile = async () : Promise<void> => {
+  const response = await api.delete(`/users/profile`);
+  return response.data;
+}
+
+export const DeleteRoom = async (roomId : number)  => {
+ await  api.get(`/rooms/delete/${roomId}`);
+}

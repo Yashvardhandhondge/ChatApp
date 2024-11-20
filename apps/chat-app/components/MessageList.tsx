@@ -36,6 +36,7 @@ const MessageList: React.FC<MessageListProps> = ({ roomId }) => {
     fetchMessages();
 
     const ws = new WebSocket('https://chatapp-8ock.onrender.com');
+    // const ws = new WebSocket('http://localhost:3000.com');
 
     ws.onopen = () => {
       ws.send(JSON.stringify({ type: 'joinRoom', roomId }));
