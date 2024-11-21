@@ -1,7 +1,7 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
-import { useWebSocket } from '@/services/websocket';
-import { getMessages } from '@/services/api'; 
+import React, { useEffect, useRef, useState } from "react";
+import { getMessages } from "@/services/api";
+import { useWebSocket } from "@/services/websocket";
 
 interface MessageListProps {
   roomId: number;
@@ -14,13 +14,13 @@ interface Message {
   createdAt: string;
   user: {
     name: string;
-    avatarUrl?: string; 
+    avatarUrl?: string;
   };
 }
 
 const MessageList: React.FC<MessageListProps> = ({ roomId }) => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const messagesEndRef = useRef<HTMLDivElement | null>(null); 
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const { sendMessage } = useWebSocket(roomId);
 
   useEffect(() => {
@@ -29,24 +29,20 @@ const MessageList: React.FC<MessageListProps> = ({ roomId }) => {
         const fetchedMessages = await getMessages(roomId);
         setMessages(fetchedMessages.data);
       } catch (error) {
-        console.error('Failed to fetch messages:', error);
+        console.error("Failed to fetch messages:", error);
       }
     };
 
     fetchMessages();
 
-    const ws = new WebSocket('https://chatapp-8ock.onrender.com');
-    // const ws = new WebSocket('http://localhost:3000.com');
-
+    const ws = new WebSocket("https://localhost:3001");
     ws.onopen = () => {
-      ws.send(JSON.stringify({ type: 'joinRoom', roomId }));
+      ws.send(JSON.stringify({ type: "joinRoom", roomId }));
     };
 
     ws.onmessage = (event: MessageEvent) => {
       const newMessage = JSON.parse(event.data);
-      console.log(newMessage);
-      
-      setMessages((prevMessages) => [...prevMessages, newMessage]); // Append new message at the bottom
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
     };
 
     return () => {
@@ -55,37 +51,43 @@ const MessageList: React.FC<MessageListProps> = ({ roomId }) => {
   }, [roomId]);
 
   useEffect(() => {
-    
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
 
   return (
-    <div className="bg-purple-50 p-4 rounded-lg shadow-md mb-4 max-h-96 overflow-y-auto w-1/2"> {/* Set widths for different screen sizes */}
-      <ul className="space-y-4"> 
+    <div className="flex-grow h-[500px]  overflow-y-auto bg-white bg-opacity-10 p-4 shadow-md">
+      <ul className="space-y-4">
         {messages.map((message) => (
-          <li key={message.id} className="border-b border-gray-200 py-2 flex items-start">
-            {message.user?.avatarUrl && (
-              <img 
+          <li key={message.id} className="flex items-start space-x-3">
+          
+            {message.user?.avatarUrl ? (
+              <img
                 src={message.user.avatarUrl}
                 alt={message.user.name}
-                className="w-10 h-10 rounded-full mr-3 shadow-sm" 
+                className="w-10 h-10 rounded-full shadow-md"
               />
-            )}
-            <div className="flex flex-col">
-              <div className="font-semibold text-purple-800">
-                {message.user?.name}
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold">
+                {message.user?.name[0]?.toUpperCase()}
               </div>
-              <p className="text-purple-900">{message.content}</p>
-              <span className="text-sm text-purple-600">
+            )}
+
+            <div className="flex flex-col">
+              <div className="text-sm text-purple-300">{message.user?.name}</div>
+              <div className="bg-white bg-opacity-20 text-white p-3 rounded-lg mt-1 shadow-md">
+                {message.content}
+              </div>
+              <span className="text-xs text-gray-400">
                 {new Date(message.createdAt).toLocaleTimeString()}
               </span>
             </div>
           </li>
         ))}
       </ul>
-      <div ref={messagesEndRef} /> 
+   
+      <div ref={messagesEndRef} />
     </div>
   );
 };

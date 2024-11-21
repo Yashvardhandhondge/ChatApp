@@ -8,6 +8,7 @@ import { getMessagesByRoom } from '../../../services/message';
 import { Message } from '@/type';
 import LoadingSpinner from '@/components/Loading';
 
+
 const RoomPage = ({ params }: { params: any }) => {
   const router = useRouter(); 
   const roomId = params.roomId;
@@ -41,11 +42,11 @@ const RoomPage = ({ params }: { params: any }) => {
     return <div>Open a chat</div>;
   }
 
-  if (loading) return <p><LoadingSpinner/></p>;
+  // if (loading) return <p><LoadingSpinner/></p>;
 
   return (
     <Layout>
-      <div className="flex flex-col  text-black">
+      <div className="flex flex-col  text-black ">
         <div className="flex-grow overflow-y-auto p-2 mx-auto max-w-4xl w-full"> 
           {error && <p className="text-red-500">{error}</p>}
           <MessageList roomId={Number(roomId)} />
