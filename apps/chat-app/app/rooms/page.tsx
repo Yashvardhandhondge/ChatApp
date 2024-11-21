@@ -3,8 +3,9 @@ import Layout from "@/components/Layout";
 import RoomList from "@/components/RoomList";
 import SearchRooms from "@/components/SearchRoom";
 import { createRoom } from "@/services/api";
+import { getId } from "@/services/auth";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPlus, FaTimes } from "react-icons/fa"; 
 
 
@@ -17,7 +18,9 @@ const Page = () => {
     joinable: true,
   });
   const [showForm, setShowForm] = useState(false); 
+  const [userId, setUserId] = useState("")
   const router = useRouter();
+
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement> = (e) => {
     const { name, value, type } = e.target;
@@ -46,6 +49,17 @@ const Page = () => {
       console.error("Failed to create room:", error);
     }
   };
+
+  useEffect(() => {
+    getId().then(
+      data => {
+        console.log("Usser: "+data.userId);
+        setUserId(data.userId)
+      }
+    )
+  
+  
+  },[])
 
   return (
     <Layout>
@@ -133,7 +147,7 @@ const Page = () => {
         </div>
            <div className="text-black ml-6">
           <RoomList
-            currentUserId={70}
+            currentUserId={parseInt(userId)}
             onRoomSelect={async (roomId) => {
               router.push(`/rooms/${roomId}`);
             }}

@@ -17,7 +17,7 @@ export const createRoom = async (req: Request, res: Response) => {
                 private: isPrivate,
                 type,
                 joinable,
-                // creatorId: userId,
+                creatorId: userId,
                 users: {
                     connect: { id: userId }
                 }

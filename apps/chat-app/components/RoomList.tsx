@@ -22,9 +22,11 @@ const RoomCard: React.FC<RoomCardProps> = ({ onRoomSelect, currentUserId }) => {
         setError((err as any).response?.data?.message || "An unexpected error occurred.");
       }
     };
-
+    console.log("CurrUser"+currentUserId);
+    
+    
     fetchRooms();
-  }, []);
+  }, [currentUserId]);
 
   const router = useRouter();
 
