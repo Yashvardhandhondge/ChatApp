@@ -103,8 +103,8 @@ This project currently requires separate steps to start individual applications 
 Add screenshots of the application here.
 
 1. **Login Page**  
-   (![Screenshot 2024-12-02 144727](https://github.com/user-attachments/assets/2b389eea-c977-42ff-8f68-cd7c2fe9a64b)
-)
+   ![Screenshot 2024-12-02 144727](https://github.com/user-attachments/assets/2b389eea-c977-42ff-8f68-cd7c2fe9a64b)
+
 
 2. **Chat Room**  
    ![Screenshot 2024-12-02 145118](https://github.com/user-attachments/assets/f4f88462-c065-444c-85bf-48ade6a59238)
@@ -118,12 +118,10 @@ Add screenshots of the application here.
 
 ## License
 This project is open-source and available for contributions. Feel free to use, modify, and share it.
-![Screenshot 2024-12-02 145145](https://github.com/user-attachments/assets/94ab5890-af77-4758-a4f3-691b470c86fb)
+
 
 ---
 
 ## Contact
 For any queries, feel free to reach out to the creator of this app.
 ```
-
-Replace the placeholder (`![Screenshot](#)`) with actual screenshot links or upload them to a hosting service to generate URLs if you are sharing the README on GitHub. Let me know if you'd like help with that!
