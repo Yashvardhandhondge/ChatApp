@@ -1,6 +1,6 @@
 Here’s a **README.md** for your Y-Chat application:  
 
-```markdown
+
 # Y-Chat
 
 Y-Chat is a real-time chat application that allows users to create and participate in rooms, which can be public or private. It's built as a **Turborepo** with separate packages for the backend and frontend.  
@@ -12,7 +12,7 @@ Y-Chat is a real-time chat application that allows users to create and participa
 - Database integration with NeonDB.
 - JWT-based authentication.
 
----
+
 
 ## Getting Started
 
@@ -103,18 +103,22 @@ This project currently requires separate steps to start individual applications 
 Add screenshots of the application here.
 
 1. **Login Page**  
-   ![Login Page](#)
+   (![Screenshot 2024-12-02 144727](https://github.com/user-attachments/assets/2b389eea-c977-42ff-8f68-cd7c2fe9a64b)
+)
 
 2. **Chat Room**  
-   ![Chat Room](#)
+   ![Screenshot 2024-12-02 145118](https://github.com/user-attachments/assets/f4f88462-c065-444c-85bf-48ade6a59238)
+
 
 3. **Public Rooms List**  
-   ![Public Rooms List](#)
+   ![Screenshot 2024-12-02 145145](https://github.com/user-attachments/assets/9fceeb2e-8feb-4a88-8f0d-a3fb8fabd306)
+
 
 ---
 
 ## License
 This project is open-source and available for contributions. Feel free to use, modify, and share it.
+![Screenshot 2024-12-02 145145](https://github.com/user-attachments/assets/94ab5890-af77-4758-a4f3-691b470c86fb)
 
 ---
 
