@@ -7,9 +7,10 @@ import { useRouter } from "next/navigation";
 interface RoomCardProps {
   onRoomSelect: (roomId: number) => void;
   currentUserId: number;
+  roomAdded: number
 }
 
-const RoomCard: React.FC<RoomCardProps> = ({ onRoomSelect, currentUserId }) => {
+const RoomCard: React.FC<RoomCardProps> = ({ onRoomSelect, currentUserId, roomAdded }) => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,10 +24,8 @@ const RoomCard: React.FC<RoomCardProps> = ({ onRoomSelect, currentUserId }) => {
       }
     };
     console.log("CurrUser"+currentUserId);
-    
-    
     fetchRooms();
-  }, [currentUserId]);
+  }, [roomAdded]);
 
   const router = useRouter();
 

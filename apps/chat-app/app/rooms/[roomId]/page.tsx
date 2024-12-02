@@ -7,13 +7,14 @@ import MessageInput from '../../../components/MessageInput';
 import { getMessagesByRoom } from '../../../services/message'; 
 import { Message } from '@/type';
 import LoadingSpinner from '@/components/Loading';
+import { useWebSocket } from '@/services/websocket';
 
 
 const RoomPage = ({ params }: { params: any }) => {
   const router = useRouter(); 
   const roomId = params.roomId;
   console.log(roomId);
-
+  const { sendMessage } = useWebSocket(Number(roomId));
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -52,7 +53,7 @@ const RoomPage = ({ params }: { params: any }) => {
           <MessageList roomId={Number(roomId)} />
         </div>
         <div className="p-4 border-t flex ml-52  ">
-          <MessageInput roomId={Number(roomId)} />
+          <MessageInput sendMessage={sendMessage} roomId={Number(roomId)} />
         </div>
       </div>
     </Layout>

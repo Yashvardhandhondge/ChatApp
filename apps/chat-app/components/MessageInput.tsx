@@ -7,11 +7,12 @@ import { useWebSocket } from "@/services/websocket";
 import { useRouter } from "next/navigation";
 interface MessageInputProps {
   roomId: number;
+  sendMessage: (message: string) => void
 }
 
-const MessageInput: React.FC<MessageInputProps> = ({ roomId }) => {
+const MessageInput: React.FC<MessageInputProps> = ({ roomId, sendMessage }) => {
   const [message, setMessage] = useState("");
-  const { sendMessage } = useWebSocket(roomId);
+  // const { sendMessage } = useWebSocket(roomId);
   const router = useRouter();
   const handleSendMessage = () => {
     if (message.trim() !== "") {
@@ -23,8 +24,8 @@ const MessageInput: React.FC<MessageInputProps> = ({ roomId }) => {
         })
       );
       setMessage(""); 
-      push();
-      router.refresh();
+      // push();
+      // router.refresh();
     }
   };
 const push = () => {

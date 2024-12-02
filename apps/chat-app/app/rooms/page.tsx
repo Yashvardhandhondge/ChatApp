@@ -19,6 +19,7 @@ const Page = () => {
   });
   const [showForm, setShowForm] = useState(false); 
   const [userId, setUserId] = useState("")
+  const [roomAdded, setRoomAdded] = useState(0)
   const router = useRouter();
 
 
@@ -44,7 +45,8 @@ const Page = () => {
       );
       console.log("Room created");
 
-      setShowForm(false); 
+      setRoomAdded(prev => prev+1)
+      setShowForm(false);
     } catch (error) {
       console.error("Failed to create room:", error);
     }
@@ -151,6 +153,7 @@ const Page = () => {
             onRoomSelect={async (roomId) => {
               router.push(`/rooms/${roomId}`);
             }}
+            roomAdded={roomAdded}
           />
         </div>
       </div>
