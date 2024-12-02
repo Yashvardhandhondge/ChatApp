@@ -1,46 +1,62 @@
-
-"use client"
-import React, { useState } from 'react';
-import { useWebSocket } from '@/services/websocket'; // Ensure this hook is set up correctly
-
+"use client";
+import React, { useState } from "react";
+import { FaPaperPlane } from "react-icons/fa"; // Icon for the send button
+// import { Input } from "@/components/ui/input";
+// import { Button } from "@/components/ui/button";
+import { useWebSocket } from "@/services/websocket";
+import { useRouter } from "next/navigation";
 interface MessageInputProps {
   roomId: number;
+  sendMessage: (message: string) => void
 }
 
-const MessageInput: React.FC<MessageInputProps> = ({ roomId }) => {
-  const [message, setMessage] = useState('');
-  const { sendMessage } = useWebSocket(roomId);
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (message.trim() !== '') {
-      sendMessage(JSON.stringify({
-        type: 'sendMessage',
-        content: message,
-        roomId,
-      }));
-      setMessage(''); // Clear the input field after sending
+const MessageInput: React.FC<MessageInputProps> = ({ roomId, sendMessage }) => {
+  const [message, setMessage] = useState("");
+  // const { sendMessage } = useWebSocket(roomId);
+  const router = useRouter();
+  const handleSendMessage = () => {
+    if (message.trim() !== "") {
+      sendMessage(
+        JSON.stringify({
+          type: "sendMessage",
+          content: message,
+          roomId,
+        })
+      );
+      setMessage(""); 
+      // push();
+      // router.refresh();
+    }
+  };
+const push = () => {
+  router.push(`/rooms/${roomId}`);
+}
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSendMessage();
     }
   };
 
   return (
-    <div className="bg-white p-4 shadow-md rounded-lg mb-4">
-      <form onSubmit={handleSubmit} className="flex">
+    <div className="p-4  fixed bottom-9 left-1 sm:w-[370px] md:right-0 md:w-[760px] md:bottom-14  lg:bottom-14 lg:left-80 lg:right-0 lg:w-[900px] bg-white bg-opacity-10 backdrop-blur-lg shadow-md rounded-lg">
+      <div className="flex space-x-2">
         <input
           type="text"
+          placeholder="Type your message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type your message..."
-          className="flex-grow px-3 py-2 border border-gray-300 rounded-l-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
+          onKeyPress={handleKeyPress}
+          className="flex-grow bg-purple-50 text-purple-900 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:outline-none rounded-md px-4 py-2"
         />
         <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r-md"
+          onClick={handleSendMessage}
+          className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-md flex items-center"
         >
+          <FaPaperPlane className="mr-2" />
           Send
         </button>
-      </form>
+      </div>
     </div>
   );
 };

@@ -51,6 +51,8 @@ export interface UserProfile {
     private: boolean;
     type?: string;
     joinable: boolean;
+    creatorId: number;
+    users: UserProfile[]
   }
   
   

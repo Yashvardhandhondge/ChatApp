@@ -1,22 +1,20 @@
-
-"use client"
+"use client";
 import React, { useEffect, useState } from 'react';
-import {  useRouter } from 'next/navigation'; 
-import { NextRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Layout from '../../../components/Layout';
 import MessageList from '../../../components/MessageList';
 import MessageInput from '../../../components/MessageInput';
 import { getMessagesByRoom } from '../../../services/message'; 
-import { Message } from '@/type'; 
-import { joinRoom } from '@/services/api';
+import { Message } from '@/type';
+import LoadingSpinner from '@/components/Loading';
+import { useWebSocket } from '@/services/websocket';
 
-const RoomPage = ({params}:{params:any}) => {
+
+const RoomPage = ({ params }: { params: any }) => {
   const router = useRouter(); 
-  const roomId  = params.roomId;
+  const roomId = params.roomId;
   console.log(roomId);
-  
-
-  const [messages, setMessages] = useState<Message[]>([]);
+  const { sendMessage } = useWebSocket(Number(roomId));
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +24,7 @@ const RoomPage = ({params}:{params:any}) => {
     const fetchMessages = async () => {
       try {
         const fetchedMessages = await getMessagesByRoom(Number(roomId));
-        setMessages(fetchedMessages);
+
         setLoading(false);
       } catch (err) {
         if ((err as any).response?.data) {
@@ -37,62 +35,25 @@ const RoomPage = ({params}:{params:any}) => {
         setLoading(false);
       }
     };
-    
 
     fetchMessages();
   }, [roomId]);
 
-  const handleSendMessage = async (content: string) => {
-    try {
-   
-    //   const newMessage = await sendMessage({
-    //     content,
-    //     roomId: Number(roomId),
-    //   });
-    //   setMessages([...messages, newMessage]);
-      
-    //   For WebSocket-based sending
-    //   sendMessage({
-    //     content,
-    //     roomId: Number(roomId),
-    //   });
-    } catch (err) {
-      if ((err as any).response?.data) {
-        setError((err as any).response.data.message);
-      } else {
-        setError('An unexpected error occurred.');
-      }
-    }
-  };
-
-  if(roomId == "base"){
-    return(
-      <div>
-        Open a chat
-      </div>
-    )
+  if (roomId === "base") {
+    return <div>Open a chat</div>;
   }
 
-  if (loading) return <p>Loading...</p>;
+  // if (loading) return <p><LoadingSpinner/></p>;
 
   return (
     <Layout>
-      <div className="flex flex-col  text-black">
-      
-        <div className="flex-grow overflow-y-auto p-4">
+      <div className="flex flex-col  text-black ">
+        <div className="flex-grow overflow-y-auto p-2 mx-auto max-w-4xl w-full"> 
           {error && <p className="text-red-500">{error}</p>}
           <MessageList roomId={Number(roomId)} />
         </div>
-  
-
-        <div className="p-4 border-t flex items-center">
-          <MessageInput roomId={Number(roomId)} />
-          <button 
-            className="ml-4 px-4 py-2 bg-blue-500 text-white rounded"
-            onClick={() => { /* Implement join room functionality */ }}
-          >
-            Join
-          </button>
+        <div className="p-4 border-t flex ml-52  ">
+          <MessageInput sendMessage={sendMessage} roomId={Number(roomId)} />
         </div>
       </div>
     </Layout>
