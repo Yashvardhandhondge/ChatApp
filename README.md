@@ -126,6 +126,4 @@ This project is open-source and available for contributions. Feel free to use, m
 
 ---
 
-## Contact
-For any queries, feel free to reach out to the creator of this app.
-```
+
