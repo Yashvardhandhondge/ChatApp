@@ -5,6 +5,10 @@ Here’s a **README.md** for your Y-Chat application:
 
 Y-Chat is a real-time chat application that allows users to create and participate in rooms, which can be public or private. It's built as a **Turborepo** with separate packages for the backend and frontend.  
 
+
+## Live Demo
+Check out the live demo here: [Y-Chat Live](https://chat-app-chat-app.vercel.app/)
+
 ## Features
 - Create public or private chat rooms.
 - Real-time messaging in rooms.
