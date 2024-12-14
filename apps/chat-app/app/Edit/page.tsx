@@ -1,9 +1,12 @@
-"use client"
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { UserProfile } from '@/type';
-import { getUserProfile, updateUserProfile } from '@/services/api'; 
+import { getUserProfile, updateUserProfile,deleteUserProfile } from '@/services/api'; 
 import Layout from '@/components/Layout';
 import { useRouter } from 'next/navigation';
+import LoadingSpinner from '@/components/Loading';
+import ProfileDropdown from '@/components/ProfileDropdown';
 
 const EditProfilePage: React.FC = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -32,7 +35,7 @@ const EditProfilePage: React.FC = () => {
       if (profile && profile.name && profile.email) {
         await updateUserProfile(profile.name, profile.email, profile.avatarUrl || '');
         setSuccess("Successfully updated your profile!!");
-        // Redirect to the profile page
+        
         router.push('/profile');
       }
     } catch (err) {
@@ -40,14 +43,24 @@ const EditProfilePage: React.FC = () => {
     }
   };
 
-  if (!profile) return <p>Loading profile...</p>;
+  const handleDelete = async () => {
+    try{
+         await deleteUserProfile();
+         setSuccess("Successfully deleted your profile!!");
+         router.push('/');
+    } catch(error) {
+      console.error(error);
+  }
+  }
+
+  if (!profile) return <p><LoadingSpinner/></p>;
 
   return (
     <Layout>
-      <div className="flex flex-col p-4">
-        <h1 className="text-2xl font-bold mb-4">Edit Profile</h1>
+      <div className="flex flex-col p-4 max-w-md mx-auto">
+        <h1 className="text-2xl font-bold mb-4 text-center">Edit Profile</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className='text-green-500 italic'>{success}</div>
+          <div className='text-green-500 italic text-center'>{success}</div>
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">
               Name
@@ -59,7 +72,7 @@ const EditProfilePage: React.FC = () => {
               value={profile.name || ''}
               placeholder='Enter name'
               onChange={handleChange}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-3 py-1"
+              className="mt-1 text-black block w-full border border-gray-300 rounded-md shadow-sm px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
@@ -73,7 +86,7 @@ const EditProfilePage: React.FC = () => {
               value={profile.email}
               onChange={handleChange}
               placeholder='Enter email'
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-3 py-1"
+              className="mt-1 text-black block w-full border border-gray-300 rounded-md shadow-sm px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
@@ -87,16 +100,23 @@ const EditProfilePage: React.FC = () => {
               value={profile.avatarUrl || ''}
               placeholder='Enter avatar URL'
               onChange={handleChange}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm px-3 py-1"
+              className="mt-1 block text-black w-full border border-gray-300 rounded-md shadow-sm px-3 py-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+            onClick={handleSubmit}
+            className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
           >
             Save Changes
           </button>
         </form>
+        <button
+        onClick={handleDelete}
+        className='w-full bg-red-500 text-white px-4 py-2 mt-4 rounded-md hover:bg-red-600 transition duration-200'
+        >
+          Delete Profile
+        </button>
       </div>
     </Layout>
   );

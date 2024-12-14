@@ -28,3 +28,11 @@ export const getUserProfile: (userId: number) => Promise<UserProfile | null> = a
     }
   });
 }
+
+export const deleteUserProfile : (userId : number) => Promise<UserProfile | null> = async (userId : number) => {
+  return await prisma.user.delete({
+    where : {
+      id : userId
+    }
+  })
+}

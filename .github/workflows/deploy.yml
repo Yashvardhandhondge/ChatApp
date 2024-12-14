@@ -1,45 +1,53 @@
-name: Build and Deploy
+name: Build and Deploy to Docker Hub
 
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - master
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Check Out Repo
+        uses: actions/checkout@v2
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push backend image
+      - name: Build and Push Backend Image
         run: |
-          docker-compose build backend
-          docker tag your-backend-image:latest ${{ secrets.DOCKERHUB_USERNAME }}/your-backend-image:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/your-backend-image:latest
+          docker build -t chatapp_backend:latest -f Dockerfile .
+          docker tag chatapp_backend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend
 
-      - name: Build and push frontend image
+      - name: Build and Push Frontend Image
         run: |
-          docker-compose build frontend
-          docker tag your-frontend-image:latest ${{ secrets.DOCKERHUB_USERNAME }}/your-frontend-image:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/your-frontend-image:latest
+          docker build -t chatapp_frontend:latest -f Dockerfile .
+          docker tag chatapp_frontend:latest ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend
 
-      - name: Log in to Azure
-        uses: azure/login@v1
+      - name: Deploy to azure
+        uses: appleboy/ssh-action@master
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Update Azure Web App with Docker Image
-        run: |
-          az webapp config container set --name your-azure-webapp-name --resource-group your-resource-group --docker-custom-image-name ${{ secrets.DOCKERHUB_USERNAME }}/your-backend-image:latest
-          az webapp config container set --name your-azure-webapp-name --resource-group your-resource-group --docker-custom-image-name ${{ secrets.DOCKERHUB_USERNAME }}/your-frontend-image:latest
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Pulling my latest images
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend:latest
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest
+            
+            # here Stoping and removing existing containers
+            sudo docker stop backend || true
+            sudo docker rm backend || true
+            sudo docker stop frontend || true
+            sudo docker rm frontend || true
+            
+            # Running new containers on virtual machine
+            sudo docker run -d --restart unless-stopped --name backend -p 3001:3001 -p 3000:3000 -e DATABASE_URL=postgresql://test_owner:aA7XtiDCQ6dl@ep-broad-bread-a5fbnico.us-east-2.aws.neon.tech/test?sslmode=require ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-backend:latest
+           # sudo docker run -d --restart unless-stopped --name frontend -p 3000:3000 ${{ secrets.DOCKERHUB_USERNAME }}/chat-app-frontend:latest

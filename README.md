@@ -1,81 +1,129 @@
-# Turborepo starter
 
-This is an official starter Turborepo.
 
-## Using this example
 
-Run the following command:
+# Y-Chat
 
-```sh
-npx create-turbo@latest
-```
+Y-Chat is a real-time chat application that allows users to create and participate in rooms, which can be public or private. It's built as a **Turborepo** with separate packages for the backend and frontend.  
 
-## What's inside?
 
-This Turborepo includes the following packages/apps:
+## Live Demo
+Check out the live demo here: [Y-Chat Live](https://chat-app-chat-app.vercel.app/)
 
-### Apps and Packages
+## Features
+- Create public or private chat rooms.
+- Real-time messaging in rooms.
+- Organized monorepo using Turborepo for scalability and maintainability.
+- Database integration with NeonDB.
+- JWT-based authentication.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
-### Utilities
+## Getting Started
 
-This Turborepo has some additional tools already setup for you:
+Follow these steps to set up and run the project on your local machine.
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+### Prerequisites
+- Node.js (v16 or later)
+- Prisma CLI
+- NeonDB account for the database setup
 
-### Build
+---
 
-To build all apps and packages, run the following command:
+### Step-by-Step Setup
 
-```
-cd my-turborepo
-pnpm build
-```
+#### 1. Root Level Setup
+- Clone the repository and navigate to the root directory.
+- Create a `.env` file at the root level with the following entry:
+  ```env
+  DATABASE_URL=your_neondb_url
+  ```
 
-### Develop
+---
 
-To develop all apps and packages, run the following command:
+#### 2. Database Setup
+- Navigate to the `packages/db` folder:
+  ```bash
+  cd packages/db
+  ```
+- Install dependencies:
+  ```bash
+  npm install
+  ```
+- Run Prisma migrations and generate Prisma client:
+  ```bash
+  npx prisma migrate dev
+  npx prisma generate
+  ```
+- To view the database schema or modify it, use:
+  ```bash
+  npx prisma studio
+  ```
 
-```
-cd my-turborepo
-pnpm dev
-```
+---
 
-### Remote Caching
+#### 3. Backend Setup
+- Open a new terminal and navigate to the `apps/backend` folder:
+  ```bash
+  cd apps/backend
+  ```
+- Set up the `.env` file for the backend:
+  ```env
+  DATABASE_URL=your_neondb_url
+  JWT_SECRET=your_jwt_secret
+  ```
+- Install dependencies:
+  ```bash
+  npm install
+  ```
+- Start the backend server:
+  ```bash
+  npm run dev
+  ```
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+---
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+#### 4. Frontend Setup
+- Open another terminal and navigate to the `apps/chat-app` folder:
+  ```bash
+  cd apps/chat-app
+  ```
+- Install dependencies:
+  ```bash
+  npm install
+  ```
+- Start the frontend application:
+  ```bash
+  npm run dev
+  ```
 
-```
-cd my-turborepo
-npx turbo login
-```
+---
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+### Contribution
+This project currently requires separate steps to start individual applications (backend and frontend). However, Turborepo supports starting everything simultaneously. If you're interested in enhancing the setup, feel free to contribute!
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+---
 
-```
-npx turbo link
-```
+## Screenshots
+Add screenshots of the application here.
 
-## Useful Links
+1. **Login Page**  
+   ![Screenshot 2024-12-02 144727](https://github.com/user-attachments/assets/2b389eea-c977-42ff-8f68-cd7c2fe9a64b)
 
-Learn more about the power of Turborepo:
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+2. **Chat Room**  
+   ![Screenshot 2024-12-02 145118](https://github.com/user-attachments/assets/f4f88462-c065-444c-85bf-48ade6a59238)
+
+
+3. **Public Rooms List**  
+   ![Screenshot 2024-12-02 145145](https://github.com/user-attachments/assets/9fceeb2e-8feb-4a88-8f0d-a3fb8fabd306)
+
+
+---
+
+## License
+This project is open-source and available for contributions. Feel free to use, modify, and share it.
+
+
+---
+
+

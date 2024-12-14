@@ -17,6 +17,7 @@ export const createRoom = async (req: Request, res: Response) => {
                 private: isPrivate,
                 type,
                 joinable,
+                creatorId: userId,
                 users: {
                     connect: { id: userId }
                 }
@@ -66,22 +67,28 @@ export const joinRoom = async (req: Request, res: Response) => {
         res.status(400).json({ error: (error as Error).message || "An error occurred while joining the room" });
     }
 };
-
 export const getRooms = async (req: Request, res: Response) => {
     try {
         const userId = req.userId;
 
-        if (!userId) {
-            return res.status(401).json({ error: "User not authenticated" });
-        }
-
         const rooms = await prisma.room.findMany({
             where: {
-                users: {
-                    some: { id: userId }
-                }
+                OR: [
+                    { private: false }, 
+                    {
+                        users: {
+                            some: { id: userId } 
+                        }
+                    },
+                  
+                ]
+            },
+            include: {
+                users: true, 
+                // creator : true
             }
         });
+        
         res.status(200).json(rooms);
     } catch (error) {
         console.error("Error fetching rooms:", error);
@@ -103,8 +110,13 @@ export const getRoom = async (req: Request, res: Response) => {
                 id: parseInt(roomId),
                 users: {
                     some: { id: userId }
-                }
-            }
+
+                },
+                
+            },
+            // include:{
+                
+            // }
         });
 
         if (!room) {
@@ -184,6 +196,9 @@ export const getRoomsByUser = async (req: Request, res: Response) => {
                         id: parseInt(userId)
                     }
                 }
+            },
+            include:{
+                
             }
         });
 
@@ -210,6 +225,9 @@ export const getRoomsByName = async (req: Request, res: Response) => {
                 name: {
                     contains: name
                 }
+            },
+            include:{
+                
             }
         });
 
@@ -221,3 +239,50 @@ export const getRoomsByName = async (req: Request, res: Response) => {
 };
 
 
+export const deleteRoom = async (req: Request, res: Response) => {
+    try {
+        const { roomId } = req.params;
+        const userId = req.userId;
+
+        // Check if the user is authenticated
+        if (!userId) {
+            return res.status(401).json({ error: "User not authenticated" });
+        }
+
+        // Find the room and ensure the user is the creator
+        const room = await prisma.room.findFirst({
+            where: {
+                id: parseInt(roomId),
+                creatorId: userId, // Ensure the user is the creator of the room
+            }
+        });
+
+        // If the room does not exist or the user is not the creator, return an error
+        if (!room) {
+            return res.status(404).json({ error: "Room not found or you are not the creator" });
+        }
+
+        // Delete associated data (optional depending on your use case)
+        // You might want to delete related room users and messages as well
+        await prisma.roomUser.deleteMany({
+            where: { roomId: parseInt(roomId) }
+        });
+
+        await prisma.message.deleteMany({
+            where: { roomId: parseInt(roomId) }
+        });
+
+        // Delete the room
+        await prisma.room.delete({
+            where: {
+                id: parseInt(roomId),
+            }
+        });
+
+        // Respond with success message
+        res.status(200).json({ message: "Room deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting room:", error);
+        res.status(400).json({ error: (error as Error).message || "An error occurred while deleting the room" });
+    }
+};

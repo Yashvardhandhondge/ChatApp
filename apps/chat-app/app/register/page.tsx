@@ -6,14 +6,14 @@ import RegisterForm from '../../components/RegisterForm';
 
 const RegisterPage: React.FC = () => {
   return (
-    <Layout>
-      <div className="flex justify-center items-center min-h-screen">
+  
+
+      <div className="flex justify-center items-center h-screen w-screen">
         <RegisterForm />
       </div>
-      <div>
-        <p>Already have an account? <a href="/login" className="text-blue-500 hover:underline">Login</a></p>
-      </div>
-    </Layout>
+   
+  
+
   );
 };
 

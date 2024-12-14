@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { Message } from '@/type'; 
 
-const API_URL = '/api/messages';
+const API_URL = 'http://localhost:3001/api/messages';
 
 export const getMessagesByRoom = async (roomId: number): Promise<Message[]> => {
   try {
